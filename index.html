@@ -1,12 +1,402 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Coffee Loyalty Program</title>
+  <meta charset="UTF-8" />
+  <title>Coffee Loyalty – Digital Stamp Cards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #05060a;
+      --bg-card: #0f1118;
+      --accent: #ffb347;
+      --accent-soft: rgba(255, 179, 71, 0.16);
+      --text-main: #f5f5f7;
+      --text-muted: #9ea0aa;
+      --border-soft: #1b1e2b;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --shadow-soft: 0 22px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #171a26 0, #05060a 55%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 14px;
+      background: radial-gradient(circle at 30% 20%, #ffe9c7, #ffb347 45%, #c86c34);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #211308;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .brand-text h1 {
+      font-size: 1.1rem;
+      letter-spacing: 0.03em;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--accent-soft);
+      background: rgba(12, 15, 25, 0.85);
+      color: var(--text-muted);
+      font-size: 0.74rem;
+    }
+
+    .tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #3df298;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 800px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #11131f, #090b12);
+      border-radius: var(--radius-xl);
+      padding: 28px 24px 24px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(255, 179, 71, 0.14), transparent 50%),
+        radial-gradient(circle at 90% 0, rgba(104, 219, 255, 0.16), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-size: clamp(1.7rem, 3vw, 2.1rem);
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 34rem;
+      margin-bottom: 18px;
+    }
+
+    .hero-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .pill {
+      font-size: 0.76rem;
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      background: rgba(7, 9, 15, 0.9);
+      color: var(--text-muted);
+    }
+
+    .pill strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      border: none;
+      border-radius: 999px;
+      padding: 9px 18px;
+      background: linear-gradient(135deg, #ffb347, #ff914d);
+      color: #1b1308;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: default;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary span {
+      font-size: 1rem;
+    }
+
+    .hero-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .hero-note strong {
+      color: #e6e6ed;
+    }
+
+    .side-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 20px 18px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      height: 100%;
+      justify-content: space-between;
+    }
+
+    .side-title {
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .side-text {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 10px;
+      font-size: 0.82rem;
+      align-items: baseline;
+    }
+
+    .step-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      border: 1px solid var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      color: var(--accent);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .meta-item {
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      background: rgba(9, 11, 19, 0.9);
+      padding: 10px 11px;
+    }
+
+    .meta-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .meta-value {
+      font-size: 0.86rem;
+    }
+
+    .contact-box {
+      margin-top: 6px;
+      padding: 9px 11px;
+      border-radius: 14px;
+      background: rgba(13, 16, 25, 0.9);
+      border: 1px dashed var(--accent-soft);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .contact-box a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer {
+      margin-top: 22px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <h1>Welcome!</h1>
-  <p>This site is for testing Google Wallet loyalty cards.</p>
-  <p>📩 Contact: example@gmail.com</p>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-logo">C</div>
+        <div class="brand-text">
+          <h1>Coffee Loyalty</h1>
+          <span class="tag">
+            <span class="tag-dot"></span>
+            Digital stamp cards • Pilot
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Left: hero -->
+      <section class="hero">
+        <div class="hero-inner">
+          <div class="hero-kicker">Google Wallet compatible</div>
+          <h2 class="hero-title">Simple digital stamp cards for local coffee shops.</h2>
+          <p class="hero-subtitle">
+            Customers collect a stamp for each drink. When they hit the target, they
+            redeem a free coffee in-store. No plastic cards, no paper, just their phone.
+          </p>
+
+          <div class="hero-badge-row">
+            <div class="pill"><strong>✔</strong> Works with Google Wallet</div>
+            <div class="pill"><strong>✔</strong> QR-based check-ins</div>
+            <div class="pill"><strong>✔</strong> No app install required</div>
+          </div>
+
+          <div class="hero-actions">
+            <button class="btn-primary" type="button">
+              <span>☕</span>
+              Test loyalty card (internal demo)
+            </button>
+            <p class="hero-note">
+              <strong>For testing only.</strong> This page is used to verify pass design
+              and business identity with Google.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: info card -->
+      <aside class="side-card">
+        <div>
+          <h3 class="side-title">How the program works</h3>
+          <p class="side-text">
+            Coffee Loyalty issues a digital card that lives inside Google Wallet.
+            Each time a customer buys a drink, the barista scans the QR code and a stamp is added.
+          </p>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div>Customer adds the card to Google Wallet using a link or QR code.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div>The café scans the card after each purchase to award a new stamp.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div>When the card is full (e.g. 10 stamps), the customer redeems a free drink.</div>
+            </div>
+          </div>
+
+          <div class="meta-grid">
+            <div class="meta-item">
+              <div class="meta-label">Status</div>
+              <div class="meta-value">Internal pilot / demo</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Use case</div>
+              <div class="meta-value">Loyalty for small cafés</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-box">
+          For questions about this loyalty demo or to report an issue, contact:<br />
+          📩 <a href="mailto:yourprojectemail@gmail.com">yourprojectemail@gmail.com</a>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      Coffee Loyalty – demo landing page for testing Google Wallet loyalty passes.
+    </footer>
+  </div>
 </body>
 </html>
